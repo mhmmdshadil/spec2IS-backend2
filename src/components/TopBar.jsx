@@ -18,11 +18,11 @@ export default function TopBar() {
   return (
     <header className="fixed top-4 sm:top-5 inset-x-0 z-50 flex justify-center px-4 sm:px-6 pointer-events-none no-print">
       <div className="pointer-events-auto liquid-glass-nav flex items-center justify-between px-4 sm:px-5 py-2 sm:py-2.5 rounded-full w-full max-w-xl sm:max-w-2xl md:max-w-3xl transition-all duration-300">
-        {/* Brand Logo: Pure typographic text "Spec2IS" (no icon), Apple typography */}
+        {/* Brand Logo: Pure typographic text "Spec2IS" (no icon), Apple/Poppins typography */}
         <Link
           to="/"
-          className="font-display font-extrabold text-lg sm:text-xl tracking-tight text-ink no-underline select-none hover:opacity-85 transition-opacity duration-200"
-          style={{ letterSpacing: '-0.035em' }}
+          className="font-extrabold text-lg sm:text-xl text-ink no-underline select-none hover:opacity-85 transition-opacity duration-200"
+          style={{ letterSpacing: '-0.04em', fontFamily: "'Poppins', sans-serif" }}
         >
           Spec<span className="text-brand">2</span>IS
         </Link>

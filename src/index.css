@@ -15,6 +15,7 @@
   --color-brand: #5E52FF;
   --color-brand-light: #ECEBFF;
 
+  --font-logo: "Poppins", "Plus Jakarta Sans", sans-serif;
   --font-display: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
   --font-serif: "Source Serif 4", "Georgia", serif;
   --font-sans: "Plus Jakarta Sans", "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
