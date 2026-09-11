@@ -188,6 +188,37 @@ h3 {
 }
 
 /* ========================================
+   Liquid Glass Navbar (Framer Style)
+   ======================================== */
+.liquid-glass-nav {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 16px 36px -8px rgba(18, 24, 38, 0.08),
+    0 4px 14px -2px rgba(18, 24, 38, 0.04),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.95),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.liquid-glass-pill {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 9999px;
+}
+
+.liquid-glass-pill:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: #111827;
+}
+
+.liquid-glass-pill-active {
+  background: rgba(0, 0, 0, 0.06);
+  color: #111827;
+  font-weight: 600;
+}
+
+/* ========================================
    Print Styles for Official Report Export
    ======================================== */
 @media print {
