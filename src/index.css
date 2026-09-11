@@ -4,21 +4,20 @@
    Design Tokens (Tailwind v4 @theme)
    ======================================== */
 @theme {
-  --color-ink: #16233D;
-  --color-paper: #FBFAF7;
-  --color-slate-ui: #5B6472;
-  --color-verified: #1F7A5C;
-  --color-caution: #B8792E;
-  --color-signal: #B23A34;
-  --color-accent: #2C6E7F;
-  --color-hairline: #DCD7CC;
-  --color-brand: #5E52FF;
+  --color-ink: #0f172a;
+  --color-paper: #ffffff;
+  --color-slate-ui: #64748b;
+  --color-verified: #0d9488;
+  --color-caution: #d97706;
+  --color-signal: #e11d48;
+  --color-accent: #4F46E5;
+  --color-hairline: #f1f5f9;
+  --color-brand: #4F46E5;
   --color-brand-light: #ECEBFF;
 
   --font-logo: "Poppins", "Plus Jakarta Sans", sans-serif;
   --font-display: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-  --font-serif: "Source Serif 4", "Georgia", serif;
-  --font-sans: "Plus Jakarta Sans", "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", "SF Mono", "Consolas", monospace;
 }
 
@@ -26,19 +25,21 @@
    Base Styles
    ======================================== */
 html {
-  background-color: var(--color-paper);
+  background-color: #f8fafc;
   color: var(--color-ink);
   font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
+  background-color: #f8fafc;
 }
 
 #root {
@@ -48,34 +49,22 @@ body {
 }
 
 /* ========================================
-   Typography
+   Typography — Apple-style Tight Tracking
    ======================================== */
 h1, h2, h3, h4 {
-  font-family: var(--font-serif);
-  font-weight: 600;
-  line-height: 1.3;
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.2;
   color: var(--color-ink);
-}
-
-h1 {
-  font-size: 1.75rem;
-  letter-spacing: -0.01em;
-}
-
-h2 {
-  font-size: 1.35rem;
-}
-
-h3 {
-  font-size: 1.1rem;
+  letter-spacing: -0.025em;
 }
 
 /* ========================================
    Selection / Scrollbar
    ======================================== */
 ::selection {
-  background-color: #2C6E7F33;
-  color: var(--color-ink);
+  background-color: rgba(79, 70, 229, 0.12);
+  color: #0f172a;
 }
 
 ::-webkit-scrollbar {
@@ -87,137 +76,67 @@ h3 {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--color-hairline);
-  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.12);
+  border-radius: 9999px;
 }
 
 /* ========================================
-   Utility: Hairline rule
-   ======================================== */
-.hairline {
-  border: none;
-  border-top: 1px solid var(--color-hairline);
-  margin: 1.5rem 0;
-}
-
-/* ========================================
-   Status left-border strips
-   ======================================== */
-.status-strip {
-  border-left: 3px solid transparent;
-  padding-left: 0.75rem;
-}
-
-.status-strip--current {
-  border-left-color: var(--color-verified);
-}
-
-.status-strip--superseded {
-  border-left-color: var(--color-caution);
-}
-
-.status-strip--withdrawn {
-  border-left-color: var(--color-signal);
-}
-
-/* ========================================
-   Content container
+   Content Container
    ======================================== */
 .content-container {
-  max-width: 760px;
+  max-width: 780px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
   width: 100%;
 }
 
 /* ========================================
-   Fade-in animation (the only motion besides stepper)
+   Framer Testimonial UI Card Style
+   Matches https://framer.com/m/Testimonial-UI-Card-5Zk4.js
+   Soft round corners + multi-layered ambient drop shadow
+   ======================================== */
+.framer-card {
+  background-color: #ffffff;
+  border-radius: 26px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow:
+    0.4px 0.7px 0.7px -0.3px rgba(0, 0, 0, 0.03),
+    1.2px 2.2px 2.2px -0.6px rgba(0, 0, 0, 0.03),
+    3.2px 5.7px 5.9px -0.9px rgba(0, 0, 0, 0.04),
+    10px 18px 24px -1.25px rgba(0, 0, 0, 0.07);
+}
+
+/* ========================================
+   Liquid Glass Navbar
+   ======================================== */
+.liquid-glass-nav {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.05),
+    0 4px 10px -2px rgba(0, 0, 0, 0.03),
+    0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+
+/* ========================================
+   Fade-in Animation
    ======================================== */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .fade-in {
-  animation: fadeIn 0.4s ease-out forwards;
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.fade-in-delay-1 { animation-delay: 0.1s; opacity: 0; }
-.fade-in-delay-2 { animation-delay: 0.2s; opacity: 0; }
-.fade-in-delay-3 { animation-delay: 0.3s; opacity: 0; }
-.fade-in-delay-4 { animation-delay: 0.4s; opacity: 0; }
-
-/* ========================================
-   Hero & Modern Aesthetics (Reference Style)
-   ======================================== */
-.dot-grid-bg {
-  background-color: #FBFAF7;
-  background-image: radial-gradient(rgba(22, 35, 61, 0.10) 1.2px, transparent 1.2px);
-  background-size: 24px 24px;
-}
-
-.floating-glass-card {
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(220, 215, 204, 0.75);
-  box-shadow: 0 16px 36px -8px rgba(22, 35, 61, 0.08), 0 3px 8px -2px rgba(22, 35, 61, 0.04);
-}
-
-.hero-glow-button {
-  background: linear-gradient(135deg, #5E52FF 0%, #4838F5 100%);
-  box-shadow: 0 8px 24px -4px rgba(94, 82, 255, 0.45);
-  transition: all 0.2s ease;
-}
-
-.hero-glow-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 28px -4px rgba(94, 82, 255, 0.55);
-}
-
-.hero-search-capsule {
-  background: #ffffff;
-  border: 1px solid rgba(220, 215, 204, 0.9);
-  box-shadow: 0 12px 32px -4px rgba(22, 35, 61, 0.06), 0 2px 6px -1px rgba(22, 35, 61, 0.03);
-}
-
-.hero-search-capsule:focus-within {
-  border-color: #5E52FF;
-  box-shadow: 0 14px 36px -4px rgba(94, 82, 255, 0.15), 0 0 0 3px rgba(94, 82, 255, 0.1);
-}
-
-/* ========================================
-   Liquid Glass Navbar (Framer Style)
-   ======================================== */
-.liquid-glass-nav {
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(24px) saturate(190%);
-  -webkit-backdrop-filter: blur(24px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow:
-    0 16px 36px -8px rgba(18, 24, 38, 0.08),
-    0 4px 14px -2px rgba(18, 24, 38, 0.04),
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.95),
-    0 0 0 1px rgba(0, 0, 0, 0.05);
-}
-
-.liquid-glass-pill {
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  border-radius: 9999px;
-}
-
-.liquid-glass-pill:hover {
-  background: rgba(0, 0, 0, 0.04);
-  color: #111827;
-}
-
-.liquid-glass-pill-active {
-  background: rgba(0, 0, 0, 0.06);
-  color: #111827;
-  font-weight: 600;
-}
+.fade-in-delay-1 { animation-delay: 0.08s; opacity: 0; }
+.fade-in-delay-2 { animation-delay: 0.16s; opacity: 0; }
+.fade-in-delay-3 { animation-delay: 0.24s; opacity: 0; }
 
 /* ========================================
    Print Styles for Official Report Export
@@ -225,11 +144,11 @@ h3 {
 @media print {
   body, html {
     background-color: #ffffff !important;
-    color: #16233D !important;
-    font-size: 14px;
+    color: #0f172a !important;
+    font-size: 13px;
   }
 
-  header nav,
+  header,
   .no-print,
   button {
     display: none !important;
@@ -241,7 +160,10 @@ h3 {
     margin: 0 !important;
   }
 
-  .status-strip {
+  .framer-card {
+    box-shadow: none !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 12px !important;
     break-inside: avoid;
     page-break-inside: avoid;
   }

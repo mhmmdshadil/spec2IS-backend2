@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 
 const STEPS = [
-  { label: 'Extracting requirements', icon: '⬡' },
-  { label: 'Matching against Indian Standards', icon: '⬡' },
-  { label: 'Checking status and version', icon: '⬡' },
-  { label: 'Scoring confidence', icon: '⬡' },
+  { label: 'Extracting requirements' },
+  { label: 'Matching against Indian Standards' },
+  { label: 'Checking status and version' },
+  { label: 'Scoring confidence' },
 ];
 
 /**
@@ -61,8 +61,8 @@ export default function PipelineStepper({ onComplete }) {
                 style={{
                   width: isCurrent ? '12px' : '10px',
                   height: isCurrent ? '12px' : '10px',
-                  backgroundColor: isActive ? '#2C6E7F' : '#DCD7CC',
-                  boxShadow: isCurrent ? '0 0 0 4px #2C6E7F22' : 'none',
+                  backgroundColor: isActive ? '#4F46E5' : '#e5e5e5',
+                  boxShadow: isCurrent ? '0 0 0 4px rgba(79, 70, 229, 0.12)' : 'none',
                 }}
               />
               {/* Connector line */}
@@ -72,7 +72,7 @@ export default function PipelineStepper({ onComplete }) {
                   style={{
                     width: '2px',
                     minHeight: '28px',
-                    backgroundColor: idx < activeStep ? '#2C6E7F' : '#DCD7CC',
+                    backgroundColor: idx < activeStep ? '#4F46E5' : '#e5e5e5',
                   }}
                 />
               )}
@@ -80,22 +80,25 @@ export default function PipelineStepper({ onComplete }) {
 
             {/* Label */}
             <p
-              className="text-sm m-0 pb-5 transition-colors duration-500"
+              className="m-0 pb-5 transition-colors duration-500"
               style={{
-                color: isActive ? '#16233D' : '#5B6472',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontSize: '0.82rem',
+                color: isActive ? '#0f0f0f' : '#999',
                 fontWeight: isActive ? 500 : 400,
                 paddingTop: '0',
                 lineHeight: '12px',
+                letterSpacing: '-0.01em',
               }}
             >
               {step.label}
               {isCurrent && (
-                <span className="inline-block ml-2 animate-pulse text-accent">
+                <span className="inline-block ml-2 animate-pulse" style={{ color: '#4F46E5' }}>
                   …
                 </span>
               )}
               {isActive && !isCurrent && idx <= activeStep && (
-                <span className="inline-block ml-2 text-verified text-xs">✓</span>
+                <span className="inline-block ml-2 text-xs" style={{ color: '#1F7A5C' }}>✓</span>
               )}
             </p>
           </div>
