@@ -1,23 +1,16 @@
 import axios from 'axios';
-import { mockAnalyze } from './mockData';
 
 /**
- * Central Axios instance.
- * Replace the baseURL with the real backend URL when ready.
+ * Central Axios instance for Spec2IS Backend API.
+ * Uses VITE_API_BASE_URL from .env or falls back to Railway backend URL.
  */
 const client = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000',
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'https://spec2is-backend-production-5f04.up.railway.app',
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 30000,
+  timeout: 90000, // 90s for multi-step LLM extraction and vector search
 });
-
-/**
- * Whether to use mock data instead of the real backend.
- * Set VITE_USE_MOCK=false in .env to hit the real API.
- */
-const USE_MOCK = import.meta.env.VITE_USE_MOCK !== 'false';
 
 /**
  * POST /analyze
@@ -25,10 +18,6 @@ const USE_MOCK = import.meta.env.VITE_USE_MOCK !== 'false';
  * @returns {Promise<Object>} The analysis result.
  */
 export async function analyzeSpecification(specificationText) {
-  if (USE_MOCK) {
-    return mockAnalyze(specificationText);
-  }
-
   const response = await client.post('/analyze', {
     specification_text: specificationText,
   });
@@ -36,3 +25,4 @@ export async function analyzeSpecification(specificationText) {
 }
 
 export default client;
+

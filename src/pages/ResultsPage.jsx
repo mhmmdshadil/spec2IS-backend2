@@ -1,13 +1,15 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import StandardCard from '../components/StandardCard';
+import StatusBadge from '../components/StatusBadge';
 import AreasToVerifyList from '../components/AreasToVerifyList';
 import ReportActions from '../components/ReportActions';
 
 export default function ResultsPage() {
   const navigate = useNavigate();
-  const { result, error, specificationText } = useApp();
+  const { result, error } = useApp();
+  const [showMoreCandidates, setShowMoreCandidates] = useState(false);
 
   // If no result and no error, redirect
   useEffect(() => {
@@ -16,26 +18,39 @@ export default function ResultsPage() {
     }
   }, [result, error, navigate]);
 
-  // Error state
+  // Error state — Backend Unreachable / Connection Failed
   if (error) {
     return (
       <div className="content-container fade-in py-12" style={{ maxWidth: '780px' }}>
-        <div className="framer-card p-7 border border-rose-200 bg-rose-50/40">
+        <div className="framer-card p-7 sm:p-8 border border-rose-200/90 bg-rose-50/40 text-left">
           <div className="flex items-center gap-3 mb-3">
-            <span className="w-8 h-8 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-sm">
+            <span className="w-9 h-9 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-base shrink-0">
               ✕
             </span>
-            <h2 className="text-xl font-bold text-[#0f172a] m-0" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              Analysis encounter an issue
-            </h2>
+            <div>
+              <h2 className="text-xl font-bold text-[#0f172a] m-0" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                Backend unreachable
+              </h2>
+              <p className="text-xs text-rose-700/80 m-0 mt-0.5">
+                Recommendation engine connection or timeout error
+              </p>
+            </div>
           </div>
-          <p className="text-sm text-[#64748b] m-0 leading-relaxed">{error}</p>
-          <button
-            onClick={() => navigate('/search')}
-            className="mt-5 text-sm font-semibold text-white bg-[#0f172a] px-6 py-2.5 rounded-full cursor-pointer border-none hover:bg-slate-800 transition-all duration-200"
-          >
-            Try again
-          </button>
+          <p className="text-sm text-[#475569] m-0 leading-relaxed max-w-2xl">{error}</p>
+          <div className="mt-6 flex items-center gap-3">
+            <button
+              onClick={() => navigate('/search')}
+              className="text-sm font-semibold text-white bg-[#0f172a] px-6 py-2.5 rounded-full cursor-pointer border-none hover:bg-slate-800 transition-all duration-200"
+            >
+              Try again
+            </button>
+            <button
+              onClick={() => navigate('/search')}
+              className="text-sm font-semibold text-[#475569] bg-white border border-slate-200/80 px-5 py-2.5 rounded-full cursor-pointer hover:bg-slate-50 transition-all duration-200"
+            >
+              Edit specification
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -43,10 +58,10 @@ export default function ResultsPage() {
 
   if (!result) return null;
 
-  const { specification, recommendations, areas_to_verify } = result;
+  const { specification, recommendations = [], areas_to_verify } = result;
 
   // Sort by confidence descending
-  const sorted = [...recommendations].sort((a, b) => b.confidence - a.confidence);
+  const sorted = [...recommendations].sort((a, b) => (b.confidence ?? 0) - (a.confidence ?? 0));
   const bestMatchNumber = sorted.length > 0 ? sorted[0].standard_number : null;
 
   // Empty recommendations
@@ -77,6 +92,10 @@ export default function ResultsPage() {
     );
   }
 
+  // Show top 3 by confidence as full cards, remaining ones collapsed into compact list
+  const topRecommendations = sorted.slice(0, 3);
+  const remainingRecommendations = sorted.slice(3);
+
   return (
     <div className="content-container py-4 sm:py-6" style={{ maxWidth: '780px' }}>
       {/* Section A — Analyzed Specification */}
@@ -98,8 +117,9 @@ export default function ResultsPage() {
           </h2>
         </div>
 
+        {/* Top 3 Full Standard Cards */}
         <div className="space-y-4">
-          {sorted.map((rec) => (
+          {topRecommendations.map((rec) => (
             <StandardCard
               key={rec.standard_number}
               rec={rec}
@@ -109,10 +129,61 @@ export default function ResultsPage() {
             />
           ))}
         </div>
+
+        {/* Remaining Candidates: Collapsible Compact List */}
+        {remainingRecommendations.length > 0 && (
+          <div className="mt-5">
+            <button
+              type="button"
+              onClick={() => setShowMoreCandidates((prev) => !prev)}
+              className="w-full flex items-center justify-center gap-2 py-3 px-5 rounded-2xl border border-slate-200/80 bg-[#f8fafc] hover:bg-[#f1f5f9] text-xs sm:text-sm font-semibold text-[#334155] cursor-pointer transition-all duration-200 select-none shadow-xs"
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            >
+              <span>
+                {showMoreCandidates
+                  ? 'Hide additional candidates'
+                  : `Show ${remainingRecommendations.length} more candidates`}
+              </span>
+              <svg
+                className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${
+                  showMoreCandidates ? 'rotate-180' : ''
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {showMoreCandidates && (
+              <div className="mt-3 framer-card overflow-hidden divide-y divide-slate-100 border border-slate-200/80 fade-in">
+                {remainingRecommendations.map((rec) => (
+                  <div
+                    key={rec.standard_number}
+                    className="p-3.5 sm:p-4 flex items-center justify-between gap-4 hover:bg-slate-50/70 transition-colors"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span className="font-mono font-bold text-sm sm:text-base text-[#0f172a] tracking-tight">
+                        {rec.standard_number}
+                      </span>
+                      <StatusBadge status={rec.status} />
+                    </div>
+                    <span className="text-xs sm:text-[13px] font-semibold text-slate-700 bg-slate-100/90 px-2.5 py-1 rounded-full border border-slate-200/60 shrink-0 font-mono">
+                      {Math.round((rec.confidence ?? 0) * 100)}% match
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </section>
 
-      {/* Section C — Areas to Verify */}
-      <AreasToVerifyList areas={areas_to_verify} />
+      {/* Section C — Areas to Verify (only rendered when non-empty) */}
+      {areas_to_verify && areas_to_verify.length > 0 && (
+        <AreasToVerifyList areas={areas_to_verify} />
+      )}
 
       {/* Section D — Human-in-the-loop Actions */}
       <ReportActions />
@@ -144,3 +215,4 @@ function SectionSpecification({ specification }) {
     </div>
   );
 }
+
